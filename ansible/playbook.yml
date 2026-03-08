@@ -1,0 +1,45 @@
+---
+- name: Install Docker and run container
+  hosts: web
+  become: true
+
+  tasks:
+
+    - name: Update package manager
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Install docker python module
+      apt:
+        name: python3-docker
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: aadidock1/html-site:v1
+        source: pull
+
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: simple-web
+        image: aadidock1/html-site:v1
+        state: started
+        ports:
+          - "5000:80"

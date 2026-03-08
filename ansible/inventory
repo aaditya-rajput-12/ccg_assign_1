@@ -1,0 +1,2 @@
+[web]
+ubuntu ansible_host=13.233.244.237 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-key-3.pem
